@@ -101,8 +101,10 @@ while True:
     cv2.putText(frame, f"FPS:{int(fps)}", (20,20), cv2.FONT_HERSHEY_COMPLEX,
                 1,(0,255,100), 2)
     
+    cv2.putText(emptyFrame,f"Person Count",(10,30),cv2.FONT_HERSHEY_SCRIPT_COMPLEX,1,(0,50,255),2)
+    cv2.putText(emptyFrame,f"Total:{len(list)}",(30,100),cv2.FONT_HERSHEY_DUPLEX,1,(255,50,255),2)
     cv2.putText(emptyFrame,f"Down:{len(counter1)}",(30,200),cv2.FONT_HERSHEY_DUPLEX,1,(255,50,255),2)
-    print(len(counter1))
+    print(len(list))
     cv2.imshow("frame", frame)
     cv2.imshow("Empty frame", emptyFrame)
     # cv2.imshow("cannyFrame", cannyFrame)
