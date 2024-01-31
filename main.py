@@ -11,7 +11,7 @@ model = YOLO('yolov8s.pt')
 myFile = open("coco.txt",'r')
 data = myFile.read()
 classList = data.split("\n")
-print(classList)
+# print(classList)
 
 cam = cv2.VideoCapture("vidp.mp4")
 
@@ -30,13 +30,14 @@ cy1 = 194
 cy2 = 220
 offset = 6
 
-emptyFrame = np.ones((480,300,3),np.uint8)*255
+# emptyFrame = np.ones((500,200,3),np.uint8)*255
 
 # kernel = np.ones((5,5), np.uint8)
 while True:
+    emptyFrame = np.ones((500,200,3),np.uint8)*255
     Success, frame = cam.read()
 
-    copyFrame = frame.copy()
+    # copyFrame = frame.copy()
 
     # grayFrame = cv2.cvtColor(copyFrame, cv2.COLOR_BGR2GRAY)
     # blurFrame = cv2.GaussianBlur(grayFrame,(7,7),0)
@@ -49,7 +50,7 @@ while True:
     if count % 3 != 0:
         continue
 
-    cv2.resize(frame, (1020,500))
+    frame = cv2.resize(frame, (800,500))
 
     results = model.predict(frame)
 
@@ -79,9 +80,19 @@ while True:
         cy = int(y3+y4)//2
 
         cv2.circle(frame, (cx,cy), 4, (0,255,255), cv2.FILLED)
-        cv2.rectangle(frame, (x3,y3),(x4,y4), (0,255,0),2,cv2.FILLED)
-        cv2.putText(frame,f"id:{id}",(x3-5,y3),cv2.FONT_HERSHEY_PLAIN,1,(255,70,255),2)
-        cv2.putText(emptyFrame,f"id:{id}",(150,150),cv2.FONT_HERSHEY_PLAIN,1,(255,50,255),2)
+        if cy1<(cy+offset) and cy1>(cy-offset):
+            cv2.rectangle(frame, (x3,y3),(x4,y4), (0,255,0),2,cv2.FILLED)
+            cv2.putText(frame,f"id:{id}",(x3-5,y3),cv2.FONT_HERSHEY_PLAIN,1,(255,70,255),2)
+            # cv2.putText(emptyFrame,f"id:{id}",(100,250),cv2.FONT_HERSHEY_PLAIN,1,(255,50,255),2)
+            personDown[id] = (cx, cy)
+        
+        if id in personDown:
+            if cy2<(cy+offset) and cy2>(cy-offset):
+                if counter1.count(id)==0:
+                    counter1.append(id)
+
+    cv2.line(frame, (3, cy1), (1018, cy1), (255,0,0), 2)
+    cv2.line(frame, (5, cy2), (1019, cy2), (255,0,0), 2)
 
     cTime = time.time()
     fps = 1/(cTime - pTime)
@@ -89,7 +100,9 @@ while True:
 
     cv2.putText(frame, f"FPS:{int(fps)}", (20,20), cv2.FONT_HERSHEY_COMPLEX,
                 1,(0,255,100), 2)
-
+    
+    cv2.putText(emptyFrame,f"Down:{len(counter1)}",(30,200),cv2.FONT_HERSHEY_DUPLEX,1,(255,50,255),2)
+    print(len(counter1))
     cv2.imshow("frame", frame)
     cv2.imshow("Empty frame", emptyFrame)
     # cv2.imshow("cannyFrame", cannyFrame)
