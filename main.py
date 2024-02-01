@@ -81,13 +81,13 @@ while True:
 
         cv2.circle(frame, (cx,cy), 4, (0,255,255), cv2.FILLED)
         if cy1<(cy+offset) and cy1>(cy-offset):
-            cv2.rectangle(frame, (x3,y3),(x4,y4), (0,255,0),2,cv2.FILLED)
-            cv2.putText(frame,f"id:{id}",(x3-5,y3),cv2.FONT_HERSHEY_PLAIN,1,(255,70,255),2)
             # cv2.putText(emptyFrame,f"id:{id}",(100,250),cv2.FONT_HERSHEY_PLAIN,1,(255,50,255),2)
             personDown[id] = (cx, cy)
         
         if id in personDown:
             if cy2<(cy+offset) and cy2>(cy-offset):
+                cv2.rectangle(frame, (x3,y3),(x4,y4), (0,255,0),2,cv2.FILLED)
+                cv2.putText(frame,f"id:{id}",(x3-5,y3),cv2.FONT_HERSHEY_PLAIN,1,(255,70,255),2)
                 if counter1.count(id)==0:
                     counter1.append(id)
 
