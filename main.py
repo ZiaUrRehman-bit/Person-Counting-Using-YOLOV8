@@ -90,8 +90,19 @@ while True:
                 cv2.putText(frame,f"id:{id}",(x3-5,y3),cv2.FONT_HERSHEY_PLAIN,1,(255,70,255),2)
                 if counter1.count(id)==0:
                     counter1.append(id)
+        
+        if cy2<(cy+offset) and cy2>(cy-offset):
+            # cv2.putText(emptyFrame,f"id:{id}",(100,250),cv2.FONT_HERSHEY_PLAIN,1,(255,50,255),2)
+            personUp[id] = (cx, cy)
+        
+        if id in personUp:
+            if cy1<(cy+offset) and cy1>(cy-offset):
+                cv2.rectangle(frame, (x3,y3),(x4,y4), (0,255,0),2,cv2.FILLED)
+                cv2.putText(frame,f"id:{id}",(x3-5,y3),cv2.FONT_HERSHEY_PLAIN,1,(255,70,255),2)
+                if counter2.count(id)==0:
+                    counter2.append(id)
 
-    cv2.line(frame, (3, cy1), (1018, cy1), (255,0,0), 2)
+    cv2.line(frame, (3, cy1), (1018, cy1), (255,220,230), 2)
     cv2.line(frame, (5, cy2), (1019, cy2), (255,0,0), 2)
 
     cTime = time.time()
@@ -101,9 +112,12 @@ while True:
     cv2.putText(frame, f"FPS:{int(fps)}", (20,20), cv2.FONT_HERSHEY_COMPLEX,
                 1,(0,255,100), 2)
     
-    cv2.putText(emptyFrame,f"Person Count",(10,30),cv2.FONT_HERSHEY_SCRIPT_COMPLEX,1,(0,50,255),2)
-    cv2.putText(emptyFrame,f"Total:{len(list)}",(30,100),cv2.FONT_HERSHEY_DUPLEX,1,(255,50,255),2)
-    cv2.putText(emptyFrame,f"Down:{len(counter1)}",(30,200),cv2.FONT_HERSHEY_DUPLEX,1,(255,50,255),2)
+    cv2.putText(emptyFrame,f"Person",(40,30),cv2.FONT_HERSHEY_TRIPLEX,1,(10,30,10),2)
+    cv2.putText(emptyFrame,f"Count",(40,60),cv2.FONT_HERSHEY_TRIPLEX,1,(10,30,10),2)
+    cv2.putText(emptyFrame,f"Total:{len(list)}",(30,120),cv2.FONT_HERSHEY_DUPLEX,1,(10,30,10),2)
+    cv2.putText(emptyFrame,f"Down:{len(counter1)}",(30,220),cv2.FONT_HERSHEY_DUPLEX,1,(10,30,10),2)
+    cv2.putText(emptyFrame,f"  Up:{len(counter2)}",(30,260),cv2.FONT_HERSHEY_DUPLEX,1,(10,30,10),2)
+    cv2.putText(emptyFrame,f"by Engr. Zia Ur Rehman",(10,490),cv2.FONT_HERSHEY_COMPLEX_SMALL,0.5,(10,30,10),2)
     print(len(list))
     cv2.imshow("frame", frame)
     cv2.imshow("Empty frame", emptyFrame)
